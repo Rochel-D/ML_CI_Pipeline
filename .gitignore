@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Local dataset and generated model
+data/
+model/
+
+# Python packaging
+*.egg-info/
+
+# IDE
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db

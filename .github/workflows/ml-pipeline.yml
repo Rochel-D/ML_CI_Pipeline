@@ -1,0 +1,52 @@
+name: ML CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  train-test-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Validate dataset and train model
+        run: |
+          python src/train.py
+
+      - name: Evaluate trained model
+        run: |
+          python src/evaluate.py
+
+      - name: Run application tests
+        run: |
+          pytest -v
+
+      - name: Prepare model package
+        run: |
+          mkdir -p package
+          cp model/model.joblib package/
+          cp model/metrics.txt package/
+          cp src/predict.py package/
+          cp requirements.txt package/
+          echo "Workflow Run: $GITHUB_RUN_NUMBER" > package/BUILD_INFO.txt
+          echo "Commit: $GITHUB_SHA" >> package/BUILD_INFO.txt
+
+      - name: Upload validated model package
+        uses: actions/upload-artifact@v4
+        with:
+          name: model-package-${{ github.run_number }}
+          path: package/
