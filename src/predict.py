@@ -43,7 +43,7 @@ def predict(sample):
             "Prediction must contain exactly one output."
         )
 
-    return "incorrect-output"
+    return "int(prediction[0])"
 
 
 if __name__ == "__main__":
