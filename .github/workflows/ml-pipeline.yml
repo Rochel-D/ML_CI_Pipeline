@@ -23,11 +23,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - - name: Validate dataset and train model
-  env:
-    FAILURE_MODE: quality
-  run: |
-    python src/train.py
+      - name: Validate dataset and train model
+        env:
+          FAILURE_MODE: quality
+        run: |
+          python src/train.py
 
       - name: Evaluate trained model
         run: |
