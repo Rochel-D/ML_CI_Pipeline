@@ -171,10 +171,11 @@ def main():
 
     predictions = model.predict(X_test)
 
-    model_score = accuracy_score(
-        y_test,
-        predictions
-    )
+    if failure_mode == "quality":
+        print("FAILURE MODE: Forcing candidate score to baseline.")
+        predictions = baseline_predictions
+
+    model_score = accuracy_score(y_test, predictions)
 
     required_score = baseline_score + MARGIN
 
